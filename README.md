@@ -7,9 +7,9 @@ la Universidad del Valle - Sede Yumbo.
 ## Descripción
 
 Aplicación web educativa orientada a apoyar el aprendizaje
-de protocolos de emergencia en el Colegio Comfandi El Prado.
+de protocolos de emergencia.
 
-El simulador permitirá que los docentes desarrollen
+El simulador permitirá que los usuarios desarrollen
 actividades grupales con escenarios de emergencia,
 como sismos e incendios.
 
