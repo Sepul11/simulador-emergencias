@@ -1,29 +1,47 @@
-import { useEffect, useState } from "react";
-import { verificarBackend } from "./services/Api";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import { SimulacionProvider } from './context/SimulacionContext'
+import ProtectedRoute from './components/ProtectedRoute'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import DashboardPage from './pages/DashboardPage'
+import InfoSeguridadPage from './pages/InfoSeguridadPage'
+import SimulacionesPage from './pages/SimulacionesPage'
+import EscenaPage from './pages/EscenaPage'
+import ResultadoPage from './pages/ResultadoPage'
+import GuiaPage from './pages/GuiaPage'
+import EstadisticasPage from './pages/EstadisticasPage'
+import EditorPage from './pages/EditorPage'
+import EditorEscenarioPage from './pages/EditorEscenarioPage'
 
 function App() {
-  const [estado, setEstado] = useState("Conectando con el servidor...");
-
-  useEffect(() => {
-    verificarBackend()
-      .then((datos) => {
-        setEstado(datos.message);
-      })
-      .catch(() => {
-        setEstado("No se pudo conectar con el backend");
-      });
-  }, []);
-
   return (
-    <main>
-      <h1>Simulador Educativo de Emergencias</h1>
-      <p>Colegio Comfandi El Prado</p>
-      <p>Desarrollado por SOLUTIONS S.A.S.</p>
+    <BrowserRouter>
+      <AuthProvider>
+        <SimulacionProvider>
+          <Routes>
+            {/* Rutas públicas */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
-      <h2>Estado del backend:</h2>
-      <p>{estado}</p>
-    </main>
-  );
+            {/* Rutas protegidas */}
+            <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+            <Route path="/info-seguridad" element={<ProtectedRoute><InfoSeguridadPage /></ProtectedRoute>} />
+            <Route path="/simulaciones" element={<ProtectedRoute><SimulacionesPage /></ProtectedRoute>} />
+            <Route path="/simulacion/:tipo/escena/:escenaId" element={<ProtectedRoute><EscenaPage /></ProtectedRoute>} />
+            <Route path="/simulacion/:tipo/resultado" element={<ProtectedRoute><ResultadoPage /></ProtectedRoute>} />
+            <Route path="/guia" element={<ProtectedRoute><GuiaPage /></ProtectedRoute>} />
+            <Route path="/estadisticas" element={<ProtectedRoute><EstadisticasPage /></ProtectedRoute>} />
+            <Route path="/editor" element={<ProtectedRoute><EditorPage /></ProtectedRoute>} />
+            <Route path="/editor/:id" element={<ProtectedRoute><EditorEscenarioPage /></ProtectedRoute>} />
+
+            {/* Redirección por defecto */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </SimulacionProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
